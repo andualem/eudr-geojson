@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.certificate.eudr.eudrgeojson.ExcelToJsonController">
+    <padding>
+        <Insets bottom="10.0" left="5.0" right="10.0" top="5.0"/>
+    </padding>
+
+    <Button text="Choose File" onAction="#handleFileSelection" />
+    <TextField fx:id = "filePathField" editable="false" />
+    <Button text="Upload File" onAction="#handleUploadAction"/>
+
+    <TableView fx:id="eudrDataTable">
+        <columns>
+            <TableColumn fx:id="year" text="Year"/>
+            <TableColumn fx:id="farmerId" text="Farmer Id"/>
+            <TableColumn fx:id="farmerName" text="Farmer Name"/>
+            <TableColumn fx:id="farmId" text="Farm Id"/>
+            <TableColumn fx:id="farmName" text="Farm Name"/>
+            <TableColumn fx:id="farmGroup" text="Farm Group"/>
+            <TableColumn fx:id="yield" text="Yield"/>
+            <TableColumn fx:id="size" text="Size"/>
+            <TableColumn fx:id="latitude" text="Lat"/>
+            <TableColumn fx:id="longitude" text="Long"/>
+
+
+        </columns>
+    </TableView>
+
+</VBox>
