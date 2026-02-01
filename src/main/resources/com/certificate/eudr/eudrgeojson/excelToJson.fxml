@@ -26,12 +26,12 @@
             <TableColumn fx:id="farmId" text="Farm Id"/>
             <TableColumn fx:id="farmName" text="Farm Name"/>
             <TableColumn fx:id="farmGroup" text="Farm Group"/>
-            <TableColumn fx:id="yield" text="Yield"/>
-            <TableColumn fx:id="size" text="Size"/>
-            <TableColumn fx:id="latitude" text="Lat"/>
-            <TableColumn fx:id="longitude" text="Long"/>
-
-
+            <TableColumn fx:id="farmYield" text="Yield"/>
+            <TableColumn fx:id="farmSize" text="Size"/>
+            <TableColumn fx:id="gpsLatitude" text="Lat"/>
+            <TableColumn fx:id="gpsLongitude" text="Long"/>
+            <TableColumn fx:id="plotId" text="Plot Id"/>
+            <TableColumn fx:id="nodeId" text="Node Id"/>
         </columns>
     </TableView>
 

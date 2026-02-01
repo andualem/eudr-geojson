@@ -8,8 +8,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,8 +41,8 @@ public class ExcelService implements IExcelService{
 
 
     @Override
-    public List<FarmDataWithPoint> excelToFarmDataList(MultipartFile multipartFile) throws IOException {
-        InputStream inputStream = multipartFile.getInputStream();
+    public List<FarmDataWithPoint> excelToFarmDataList(File file) throws IOException {
+        InputStream inputStream = new FileInputStream(file.getPath());
 
         Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheet(SHEET_NAME);
@@ -117,8 +121,9 @@ public class ExcelService implements IExcelService{
     }
 
     @Override
-    public boolean hasExcelFormat(MultipartFile multipartFile) {
-        return TYPE.equals(multipartFile.getContentType());
+    public boolean hasExcelFormat(File file) throws IOException {
+      Path path = Path.of(file.getPath());
+      return Files.probeContentType(path).equals(TYPE);
     }
 
 
