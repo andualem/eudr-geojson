@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.certificate.eudr.eudrgeojson.ExcelToJsonController">
+      fx:controller="com.certificate.eudr.eudrgeojson.controller.ExcelToJsonController">
     <padding>
         <Insets bottom="10.0" left="5.0" right="10.0" top="5.0"/>
     </padding>
@@ -34,5 +34,7 @@
             <TableColumn fx:id="nodeId" text="Node Id"/>
         </columns>
     </TableView>
+
+    <Button text="Download GeoJson" onAction="#handleDownloadAction"/>
 
 </VBox>

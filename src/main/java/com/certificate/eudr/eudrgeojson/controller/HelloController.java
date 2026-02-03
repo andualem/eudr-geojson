@@ -1,4 +1,4 @@
-package com.certificate.eudr.eudrgeojson;
+package com.certificate.eudr.eudrgeojson.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

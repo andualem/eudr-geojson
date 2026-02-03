@@ -1,6 +1,5 @@
-package com.certificate.eudr.eudrgeojson;
+package com.certificate.eudr.eudrgeojson.controller;
 
-import com.certificate.eudr.eudrgeojson.entities.DataTableProperty;
 import com.certificate.eudr.eudrgeojson.entities.FarmDataWithPoint;
 import com.certificate.eudr.eudrgeojson.service.ExcelService;
 import com.certificate.eudr.eudrgeojson.service.IExcelService;
@@ -68,6 +67,8 @@ public class ExcelToJsonController {
 
     private IExcelService excelService;
 
+    private List<FarmDataWithPoint> farmDataWithPointList;
+
     @FXML
     protected void handleFileSelection(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -88,10 +89,8 @@ public class ExcelToJsonController {
         if (selectedFile != null) {
 
             excelService = new ExcelService();
-            List<FarmDataWithPoint> farmDataWithPointList = excelService.excelToFarmDataList(selectedFile);
-
-
-
+            farmDataWithPointList = excelService.excelToFarmDataList(selectedFile);
+            populateTableView(farmDataWithPointList);
             System.out.println("Size of data is : " + farmDataWithPointList.size());
         } else {
             System.out.println("No file selected.");
@@ -117,6 +116,12 @@ public class ExcelToJsonController {
 
         eudrDataTable.getColumns().addAll(year, farmerId, farmerName, farmId, farmName, farmGroup,
                 farmYield, farmSize, gpsLatitude, gpsLongitude, nodeId, plotId);
+
+    }
+
+
+    @FXML
+    protected void handleDownloadAction (ActionEvent event) {
 
     }
 }

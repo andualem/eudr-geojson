@@ -56,6 +56,13 @@
             <version>5.2.0</version> <!-- Use the same version -->
         </dependency>
 
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
