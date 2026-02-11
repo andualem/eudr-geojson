@@ -20,18 +20,18 @@
 
     <TableView fx:id="eudrDataTable">
         <columns>
-            <TableColumn fx:id="year" text="Year"/>
-            <TableColumn fx:id="farmerId" text="Farmer Id"/>
-            <TableColumn fx:id="farmerName" text="Farmer Name"/>
-            <TableColumn fx:id="farmId" text="Farm Id"/>
-            <TableColumn fx:id="farmName" text="Farm Name"/>
-            <TableColumn fx:id="farmGroup" text="Farm Group"/>
-            <TableColumn fx:id="farmYield" text="Yield"/>
-            <TableColumn fx:id="farmSize" text="Size"/>
-            <TableColumn fx:id="gpsLatitude" text="Lat"/>
-            <TableColumn fx:id="gpsLongitude" text="Long"/>
-            <TableColumn fx:id="plotId" text="Plot Id"/>
-            <TableColumn fx:id="nodeId" text="Node Id"/>
+<!--            <TableColumn fx:id="year" text="Year"/>-->
+<!--            <TableColumn fx:id="farmerId" text="Farmer Id"/>-->
+<!--            <TableColumn fx:id="farmerName" text="Farmer Name"/>-->
+<!--            <TableColumn fx:id="farmId" text="Farm Id"/>-->
+<!--            <TableColumn fx:id="farmName" text="Farm Name"/>-->
+<!--            <TableColumn fx:id="farmGroup" text="Farm Group"/>-->
+<!--            <TableColumn fx:id="farmYield" text="Yield"/>-->
+<!--            <TableColumn fx:id="farmSize" text="Size"/>-->
+<!--            <TableColumn fx:id="gpsLatitude" text="Lat"/>-->
+<!--            <TableColumn fx:id="gpsLongitude" text="Long"/>-->
+<!--            <TableColumn fx:id="plotId" text="Plot Id"/>-->
+<!--            <TableColumn fx:id="nodeId" text="Node Id"/>-->
         </columns>
     </TableView>
 

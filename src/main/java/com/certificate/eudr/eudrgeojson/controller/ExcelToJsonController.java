@@ -1,5 +1,7 @@
 package com.certificate.eudr.eudrgeojson.controller;
 
+import com.certificate.eudr.eudrgeojson.controller.service.GeoJsonService;
+import com.certificate.eudr.eudrgeojson.controller.service.IGeoJsonService;
 import com.certificate.eudr.eudrgeojson.entities.FarmDataWithPoint;
 import com.certificate.eudr.eudrgeojson.service.ExcelService;
 import com.certificate.eudr.eudrgeojson.service.IExcelService;
@@ -26,46 +28,48 @@ public class ExcelToJsonController {
     @FXML
     private TableView<FarmDataWithPoint> eudrDataTable;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Integer> year;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, String> farmerId;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, String> farmerName;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, String> farmId;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, String> farmName;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, String> farmGroup;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Double> farmYield;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Double> farmSize;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Double> gpsLatitude;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Double> gpsLongitude;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Double> plotId;
 
-    @FXML
+//    @FXML
     private TableColumn<FarmDataWithPoint, Double> nodeId;
 
 
     private File selectedFile;
 
     private IExcelService excelService;
+
+    private IGeoJsonService geoJsonService;
 
     private List<FarmDataWithPoint> farmDataWithPointList;
 
@@ -101,27 +105,59 @@ public class ExcelToJsonController {
     private void populateTableView(List<FarmDataWithPoint> farmDataWithPointList) {
         ObservableList<FarmDataWithPoint> observableList = FXCollections.observableArrayList(farmDataWithPointList);
         eudrDataTable.setItems(observableList);
+        year = new TableColumn<>("year");
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
+
+        farmerId = new TableColumn<>("farmerId");
         farmerId.setCellValueFactory(new PropertyValueFactory<>("farmerId"));
+
+        farmerName = new TableColumn<>("farmerName");
         farmerName.setCellValueFactory(new PropertyValueFactory<>("farmerName"));
+
+        farmId = new TableColumn<>("farmId");
         farmId.setCellValueFactory(new PropertyValueFactory<>("farmId"));
+
+        farmName = new TableColumn<>("farmName");
         farmName.setCellValueFactory(new PropertyValueFactory<>("farmName"));
+
+        farmGroup = new TableColumn<>("farmGroup");
         farmGroup.setCellValueFactory(new PropertyValueFactory<>("farmGroup"));
+
+        farmYield = new TableColumn<>("farmYield");
         farmYield.setCellValueFactory(new PropertyValueFactory<>("farmYield"));
+
+        farmSize = new TableColumn<>("farmSize");
         farmSize.setCellValueFactory(new PropertyValueFactory<>("farmSize"));
+
+        gpsLatitude = new TableColumn<>("gpsLatitude");
         gpsLatitude.setCellValueFactory(new PropertyValueFactory<>("gpsLatitude"));
+
+        gpsLongitude = new TableColumn<>("gpsLongitude");
         gpsLongitude.setCellValueFactory(new PropertyValueFactory<>("gpsLongitude"));
+
+        nodeId = new TableColumn<>("nodeId");
         nodeId.setCellValueFactory(new PropertyValueFactory<>("nodeId"));
+
+        plotId = new TableColumn<>("plotId");
         plotId.setCellValueFactory(new PropertyValueFactory<>("plotId"));
 
         eudrDataTable.getColumns().addAll(year, farmerId, farmerName, farmId, farmName, farmGroup,
                 farmYield, farmSize, gpsLatitude, gpsLongitude, nodeId, plotId);
+
+
 
     }
 
 
     @FXML
     protected void handleDownloadAction (ActionEvent event) {
-
+        if (farmDataWithPointList != null && !farmDataWithPointList.isEmpty()){
+            geoJsonService = new GeoJsonService();
+            try {
+                geoJsonService.getPointGeoJson(farmDataWithPointList);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
