@@ -1,10 +1,14 @@
 package com.certificate.eudr.eudrgeojson.controller;
 
+import com.certificate.eudr.eudrgeojson.controller.entities.FarmDataView;
 import com.certificate.eudr.eudrgeojson.controller.service.GeoJsonService;
 import com.certificate.eudr.eudrgeojson.controller.service.IGeoJsonService;
 import com.certificate.eudr.eudrgeojson.entities.FarmDataWithPoint;
 import com.certificate.eudr.eudrgeojson.service.ExcelService;
 import com.certificate.eudr.eudrgeojson.service.IExcelService;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelToJsonController {
@@ -26,43 +31,43 @@ public class ExcelToJsonController {
     private TextField filePathField;
 
     @FXML
-    private TableView<FarmDataWithPoint> eudrDataTable;
+    private TableView<FarmDataView> eudrDataTable;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Integer> year;
+    private TableColumn<FarmDataView, Number> year;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, String> farmerId;
+    private TableColumn<FarmDataView, String> farmerId;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, String> farmerName;
+    private TableColumn<FarmDataView, String> farmerName;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, String> farmId;
+    private TableColumn<FarmDataView, String> farmId;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, String> farmName;
+    private TableColumn<FarmDataView, String> farmName;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, String> farmGroup;
+    private TableColumn<FarmDataView, String> farmGroup;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Double> farmYield;
+    private TableColumn<FarmDataView, Number> farmYield;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Double> farmSize;
+    private TableColumn<FarmDataView, Number> farmSize;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Double> gpsLatitude;
+    private TableColumn<FarmDataView, Number> gpsLatitude;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Double> gpsLongitude;
+    private TableColumn<FarmDataView, Number> gpsLongitude;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Double> plotId;
+    private TableColumn<FarmDataView, String> plotId;
 
 //    @FXML
-    private TableColumn<FarmDataWithPoint, Double> nodeId;
+    private TableColumn<FarmDataView, String> nodeId;
 
 
     private File selectedFile;
@@ -94,7 +99,10 @@ public class ExcelToJsonController {
 
             excelService = new ExcelService();
             farmDataWithPointList = excelService.excelToFarmDataList(selectedFile);
-            populateTableView(farmDataWithPointList);
+
+            List<FarmDataView> farmDataViewList = mapFarmDataForView(farmDataWithPointList);
+
+            populateTableView(farmDataViewList);
             System.out.println("Size of data is : " + farmDataWithPointList.size());
         } else {
             System.out.println("No file selected.");
@@ -102,52 +110,83 @@ public class ExcelToJsonController {
 
     }
 
-    private void populateTableView(List<FarmDataWithPoint> farmDataWithPointList) {
-        ObservableList<FarmDataWithPoint> observableList = FXCollections.observableArrayList(farmDataWithPointList);
-        eudrDataTable.setItems(observableList);
+
+
+    private void populateTableView(List<FarmDataView> farmDataViewList) {
+        ObservableList<FarmDataView> observableList = FXCollections.observableArrayList(farmDataViewList);
+
         year = new TableColumn<>("year");
-        year.setCellValueFactory(new PropertyValueFactory<>("year"));
+//        year.setCellValueFactory(new PropertyValueFactory<>("year"));
+        year.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getYear()));
+
 
         farmerId = new TableColumn<>("farmerId");
-        farmerId.setCellValueFactory(new PropertyValueFactory<>("farmerId"));
+        farmerId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getFarmerId()));
 
         farmerName = new TableColumn<>("farmerName");
-        farmerName.setCellValueFactory(new PropertyValueFactory<>("farmerName"));
+        farmerName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getFarmerName()));
 
         farmId = new TableColumn<>("farmId");
-        farmId.setCellValueFactory(new PropertyValueFactory<>("farmId"));
+        farmId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getFarmId()));
 
         farmName = new TableColumn<>("farmName");
-        farmName.setCellValueFactory(new PropertyValueFactory<>("farmName"));
+        farmName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getFarmerName()));
 
         farmGroup = new TableColumn<>("farmGroup");
-        farmGroup.setCellValueFactory(new PropertyValueFactory<>("farmGroup"));
+        farmGroup.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getFarmGroup()));
 
         farmYield = new TableColumn<>("farmYield");
-        farmYield.setCellValueFactory(new PropertyValueFactory<>("farmYield"));
+        farmYield.setCellValueFactory(c -> new SimpleDoubleProperty((c.getValue().getFarmYield())));
 
         farmSize = new TableColumn<>("farmSize");
-        farmSize.setCellValueFactory(new PropertyValueFactory<>("farmSize"));
+        farmSize.setCellValueFactory(c -> new SimpleDoubleProperty((c.getValue().getFarmSize())));
 
         gpsLatitude = new TableColumn<>("gpsLatitude");
-        gpsLatitude.setCellValueFactory(new PropertyValueFactory<>("gpsLatitude"));
+        gpsLatitude.setCellValueFactory(c -> new SimpleDoubleProperty((c.getValue().getGpsLatitude())));
 
         gpsLongitude = new TableColumn<>("gpsLongitude");
-        gpsLongitude.setCellValueFactory(new PropertyValueFactory<>("gpsLongitude"));
+        gpsLongitude.setCellValueFactory(c -> new SimpleDoubleProperty((c.getValue().getGpsLongitude())));
 
         nodeId = new TableColumn<>("nodeId");
-        nodeId.setCellValueFactory(new PropertyValueFactory<>("nodeId"));
+        nodeId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNodeId()));
 
         plotId = new TableColumn<>("plotId");
-        plotId.setCellValueFactory(new PropertyValueFactory<>("plotId"));
+        plotId.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPlotId()));
 
         eudrDataTable.getColumns().addAll(year, farmerId, farmerName, farmId, farmName, farmGroup,
                 farmYield, farmSize, gpsLatitude, gpsLongitude, nodeId, plotId);
 
-
+        eudrDataTable.setItems(observableList);
 
     }
 
+
+    private List<FarmDataView> mapFarmDataForView(List<FarmDataWithPoint> farmDataWithPointList) {
+        List<FarmDataView> farmDataViewList;
+        if(farmDataWithPointList != null && !farmDataWithPointList.isEmpty()) {
+            farmDataViewList = new ArrayList<>(farmDataWithPointList.size());
+
+            for(FarmDataWithPoint farmDataWithPoint : farmDataWithPointList) {
+                FarmDataView farmDataView = new FarmDataView();
+                farmDataView.setYear(farmDataWithPoint.getYear());
+                farmDataView.setFarmId(String.valueOf(farmDataWithPoint.getFarmId()));
+                farmDataView.setFarmName(String.valueOf(farmDataWithPoint.getFarmName()));
+                farmDataView.setFarmerId(farmDataWithPoint.getFarmerId());
+                farmDataView.setFarmerName(farmDataWithPoint.getFarmerName());
+                farmDataView.setFarmGroup(farmDataWithPoint.getFarmGroup());
+                farmDataView.setFarmYield(farmDataWithPoint.getFarmYield());
+                farmDataView.setFarmSize(farmDataWithPoint.getFarmSize());
+                farmDataView.setGpsLatitude(farmDataWithPoint.getGpsLatitude());
+                farmDataView.setGpsLongitude(farmDataWithPoint.getGpsLongitude());
+                farmDataView.setNodeId(farmDataWithPoint.getNodeId());
+                farmDataView.setPlotId(farmDataWithPoint.getPlotId());
+                farmDataViewList.add(farmDataView);
+            }
+
+            return farmDataViewList;
+        }
+        return null;
+    }
 
     @FXML
     protected void handleDownloadAction (ActionEvent event) {
