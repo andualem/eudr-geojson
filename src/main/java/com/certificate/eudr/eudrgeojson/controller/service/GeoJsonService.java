@@ -7,6 +7,8 @@ import com.certificate.eudr.eudrgeojson.controller.entities.PointGeometry;
 import com.certificate.eudr.eudrgeojson.controller.entities.Property;
 import com.certificate.eudr.eudrgeojson.entities.FarmData;
 import com.certificate.eudr.eudrgeojson.entities.FarmDataWithPoint;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import java.io.FileWriter;
@@ -80,14 +82,13 @@ public class GeoJsonService implements IGeoJsonService{
     public String getPointGeoJson(List<FarmDataWithPoint> farmDataList) throws IOException {
         FeatureCollection featureCollection;
         featureCollection = getPointFeatureCollection(farmDataList);
-        String filePath = FILE_NAME + " " + getTimeStamp() + FILE_EXTENSION;
+//        String filePath = FILE_NAME + " " + getTimeStamp() + FILE_EXTENSION;
         String jsonContent;
-
         Gson gson = new Gson();
         jsonContent = gson.toJson(featureCollection);
-        FileWriter writer = new FileWriter(filePath);
-        writer.write(jsonContent);
-        writer.close();
+//        FileWriter writer = new FileWriter(filePath);
+//        writer.write(jsonContent);
+//        writer.close();
         return jsonContent;
     }
 
@@ -144,10 +145,10 @@ public class GeoJsonService implements IGeoJsonService{
         return coordinates;
     }
 
-    private String getTimeStamp(){
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-        return now.format(formatter);
-    }
+//    private String getTimeStamp(){
+//        LocalDateTime now = LocalDateTime.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+//        return now.format(formatter);
+//    }
 
 }

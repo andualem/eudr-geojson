@@ -13,19 +13,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelToJsonController {
+
+    private final String FILE_NAME = "FeatureCollection";
+    private final String FILE_EXTENSION = ".geojson";
+    private String jsonFilePath;
 
     @FXML
     private TextField filePathField;
@@ -69,6 +79,12 @@ public class ExcelToJsonController {
 //    @FXML
     private TableColumn<FarmDataView, String> nodeId;
 
+    @FXML
+    private Text dataSizeTxt;
+
+    @FXML
+    private TextField directoryPathField;
+
 
     private File selectedFile;
 
@@ -77,6 +93,8 @@ public class ExcelToJsonController {
     private IGeoJsonService geoJsonService;
 
     private List<FarmDataWithPoint> farmDataWithPointList;
+
+
 
     @FXML
     protected void handleFileSelection(ActionEvent event) {
@@ -103,7 +121,9 @@ public class ExcelToJsonController {
             List<FarmDataView> farmDataViewList = mapFarmDataForView(farmDataWithPointList);
 
             populateTableView(farmDataViewList);
-            System.out.println("Size of data is : " + farmDataWithPointList.size());
+
+            dataSizeTxt.setText("Size of data : " + String.valueOf(farmDataWithPointList.size()));
+            System.out.println("Size of data : " + farmDataWithPointList.size());
         } else {
             System.out.println("No file selected.");
         }
@@ -189,14 +209,51 @@ public class ExcelToJsonController {
     }
 
     @FXML
+    protected void handleDirSelection(ActionEvent event){
+        Stage stage = (Stage) directoryPathField.getScene().getWindow();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Destination Folder");
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        jsonFilePath = selectedDirectory.getAbsolutePath() + "/"
+                + FILE_NAME + " " + getTimeStamp() + FILE_EXTENSION;
+        directoryPathField.setText(jsonFilePath);
+    }
+
+    @FXML
     protected void handleDownloadAction (ActionEvent event) {
         if (farmDataWithPointList != null && !farmDataWithPointList.isEmpty()){
             geoJsonService = new GeoJsonService();
             try {
-                geoJsonService.getPointGeoJson(farmDataWithPointList);
+                String jsonContent = geoJsonService.getPointGeoJson(farmDataWithPointList);
+                FileWriter writer = new FileWriter(jsonFilePath);
+                writer.write(jsonContent);
+                writer.close();
+
+                showAlertDialog("Success", "Download completed successfully");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+//    @FXML
+//    protected void handleDownloadTemplateAction(ActionEvent event){
+//        showAlertDialog("template", "template");
+//    }
+
+
+    private void showAlertDialog (String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+    private String getTimeStamp(){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+        return now.format(formatter);
     }
 }

@@ -8,8 +8,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.certificate.eudr.eudrgeojson.controller.ExcelToJsonController">
+      fx:controller="com.certificate.eudr.eudrgeojson.controller.ExcelToJsonController" spacing="15">
+
     <padding>
         <Insets bottom="10.0" left="5.0" right="10.0" top="5.0"/>
     </padding>
@@ -17,6 +19,8 @@
     <Button text="Choose File" onAction="#handleFileSelection" />
     <TextField fx:id = "filePathField" editable="false" />
     <Button text="Upload File" onAction="#handleUploadAction"/>
+
+    <Text fx:id = "dataSizeTxt" text="Size of data: 0"/>
 
     <TableView fx:id="eudrDataTable">
         <columns>
@@ -35,6 +39,12 @@
         </columns>
     </TableView>
 
+
+    <Button text="Choose Directory" onAction="#handleDirSelection" />
+    <TextField fx:id = "directoryPathField" editable="false" />
     <Button text="Download GeoJson" onAction="#handleDownloadAction"/>
+
+
+<!--    <Text text="Download Template" onMouseClicked="#handleDownloadTemplateAction" />-->
 
 </VBox>
